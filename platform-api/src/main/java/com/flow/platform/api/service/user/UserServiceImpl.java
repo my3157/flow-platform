@@ -392,7 +392,7 @@ public class UserServiceImpl extends CurrentUser implements UserService {
     }
 
     private List<User> listAdminUsers(){
-        List<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<>(SysRole.values().length);
         Role role = roleService.find(SysRole.ADMIN.name());
         List<String> emails = userRoleDao.list(role.getId());
         for (String email: emails){
