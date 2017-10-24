@@ -68,7 +68,7 @@ public class UserServiceTest extends TestBase {
 
         nodeService.createEmptyFlow("flow_test");
 
-        List<User> users = userService.list(true, true);
+        List<User> users = userService.list(true, true, "ADMIN");
         Assert.assertEquals(2, users.size());
 
         // then:

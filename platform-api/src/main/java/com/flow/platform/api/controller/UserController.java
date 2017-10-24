@@ -9,9 +9,11 @@ import com.flow.platform.api.domain.user.User;
 import com.flow.platform.api.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -59,10 +61,10 @@ public class UserController {
      *  ]
      */
     @GetMapping
-    public UserListResponse list() {
+    public UserListResponse list(@RequestParam(required = false) String types) {
         Long userCount = userService.usersCount();
         Long userAdminCount = userService.adminUserCount();
-        List<User> users = userService.list(true, true);
+        List<User> users = userService.list(true, true, "ADMIN");
         UserListResponse userListResponse = new UserListResponse(userCount, userAdminCount, users);
         return userListResponse;
     }

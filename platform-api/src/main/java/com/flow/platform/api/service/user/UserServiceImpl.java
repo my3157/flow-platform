@@ -22,6 +22,7 @@ import com.flow.platform.core.exception.IllegalParameterException;
 import com.flow.platform.util.ExceptionUtil;
 import com.flow.platform.util.Logger;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -78,8 +79,13 @@ public class UserServiceImpl extends CurrentUser implements UserService {
     private String webDomain;
 
     @Override
-    public List<User> list(boolean withFlow, boolean withRole) {
-        List<User> users = userDao.list();
+    public List<User> list(boolean withFlow, boolean withRole, String type) {
+        List<User> users = null;
+        if (type != null){
+             users = listUsers();
+        } else {
+            users = userDao.list();
+        }
 
         if (!withFlow && !withRole) {
             return users;
@@ -211,6 +217,12 @@ public class UserServiceImpl extends CurrentUser implements UserService {
     public Long adminUserCount() {
         Role role = roleService.find(SysRole.ADMIN.name());
         return userRoleDao.numOfUser(role.getId());
+    }
+
+    @Override
+    public List<String> getEmails(){
+        Role role = roleService.find(SysRole.ADMIN.name());
+        return userRoleDao.list(role.getId());
     }
 
     @Override
@@ -377,6 +389,17 @@ public class UserServiceImpl extends CurrentUser implements UserService {
                 ExceptionUtil.findRootCause(e).getMessage());
         }
         return null;
+    }
+
+    private List<User> listUsers(){
+        List<User> users = new ArrayList<>();
+        Role role = roleService.find(SysRole.ADMIN.name());
+        List<String> emails = userRoleDao.list(role.getId());
+        for (String email: emails){
+            User user = findByEmail(email);
+            users.add(user);
+        }
+        return users;
     }
 
 }

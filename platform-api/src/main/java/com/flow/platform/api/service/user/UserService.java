@@ -13,7 +13,7 @@ public interface UserService {
     /**
      * List all users
      */
-    List<User> list(boolean withFlow, boolean withRole);
+    List<User> list(boolean withFlow, boolean withRole, String type);
 
     /**
      * Find user by email
@@ -46,6 +46,8 @@ public interface UserService {
      * calculate user for admin count
      */
     Long adminUserCount();
+
+    List<String> getEmails();
 
     /**
      * calculate user total
