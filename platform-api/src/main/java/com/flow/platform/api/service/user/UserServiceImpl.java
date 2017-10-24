@@ -82,7 +82,7 @@ public class UserServiceImpl extends CurrentUser implements UserService {
     public List<User> list(boolean withFlow, boolean withRole, String type) {
         List<User> users = null;
         if (type != null){
-             users = listUsers();
+             users = listAdminUsers();
         } else {
             users = userDao.list();
         }
@@ -391,7 +391,7 @@ public class UserServiceImpl extends CurrentUser implements UserService {
         return null;
     }
 
-    private List<User> listUsers(){
+    private List<User> listAdminUsers(){
         List<User> users = new ArrayList<>();
         Role role = roleService.find(SysRole.ADMIN.name());
         List<String> emails = userRoleDao.list(role.getId());

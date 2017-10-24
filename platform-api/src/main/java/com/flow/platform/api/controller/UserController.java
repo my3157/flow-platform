@@ -61,10 +61,10 @@ public class UserController {
      *  ]
      */
     @GetMapping
-    public UserListResponse list(@RequestParam(required = false) String types) {
+    public UserListResponse list(@RequestParam(required = false) String type) {
         Long userCount = userService.usersCount();
         Long userAdminCount = userService.adminUserCount();
-        List<User> users = userService.list(true, true, "ADMIN");
+        List<User> users = userService.list(true, true, type);
         UserListResponse userListResponse = new UserListResponse(userCount, userAdminCount, users);
         return userListResponse;
     }
